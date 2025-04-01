@@ -83,6 +83,8 @@ Route::group(['prefix' => 'admin','middleware' => 'auth:admin'], function(){
     Route::get('/all-products', [App\Http\Controllers\Admins\AdminsController::class, 'displayProducts'])->name('products.all');
     Route::get('/create-products', [App\Http\Controllers\Admins\AdminsController::class, 'createProducts'])->name('products.create');
     Route::post('/create-products', [App\Http\Controllers\Admins\AdminsController::class, 'storeProducts'])->name('products.store');
+    Route::get('/edit-products/{id}', [App\Http\Controllers\Admins\AdminsController::class, 'editProducts'])->name('products.edit');
+    Route::post('/update-products/{id}', [App\Http\Controllers\Admins\AdminsController::class, 'updateProducts'])->name('products.update');
     Route::get('/delete-products/{id}', [App\Http\Controllers\Admins\AdminsController::class, 'deleteProducts'])->name('products.delete');
 
    //orders

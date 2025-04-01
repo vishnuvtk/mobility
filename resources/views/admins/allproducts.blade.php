@@ -30,7 +30,7 @@
                 <th scope="col">ID</th>
                 <th scope="col">Product</th>
                 <th scope="col">Price ($)</th>
-                <th scope="col">Expiration Date</th>
+                <th scope="col">Update</th>
                 <th scope="col">Delete</th>
               </tr>
             </thead>
@@ -41,7 +41,7 @@
                         <th scope="row">{{ $product->id}}</th>
                         <td>{{ $product->name}}</td>
                         <td>{{ $product->price}}</td>
-                        <td>{{ $product->exp_date}}</td>
+                        <td><a  href="{{route('products.edit', $product->id)}}" class="btn btn-warning text-white text-center ">Update </a></td>
                         <td><a href="{{route('products.delete', $product->id)}}" class="btn btn-danger  text-center ">Delete</a></td>
                     </tr>
                     

@@ -184,20 +184,16 @@ class ProductsController extends Controller
        
     }
     public function success() {
-
+    if (Auth::check()) {
         $deleteItemsFromCart = Cart::where('user_id', Auth::user()->id);
-        
         $deleteItemsFromCart->delete();
 
-        if($deleteItemsFromCart) {
-
-            Session::forget('value');
-
-            return view("products.success");
-        }
-
-       
+        Session::forget('value');
     }
+
+    return view("products.success");
+}
+
 
 
 

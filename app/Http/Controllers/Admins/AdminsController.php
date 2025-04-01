@@ -120,18 +120,33 @@ class AdminsController extends Controller
     }
 
 
-    public function updateCategories(Request $request, $id){
+    public function updateCategories(Request $request, $id)
+{
+    $category = Category::find($id);
 
-        $category = Category::find($id);
+    // Update text fields
+    $category->name = $request->name;
+    $category->icon = $request->icon;
 
+    // Check if new image is uploaded
+    if ($request->hasFile('image')) {
+        $image = $request->file('image');
 
-        $category->update($request->all());
+        // Optional: delete old image
+        if (File::exists(public_path('assets/img/' . $category->image))) {
+            File::delete(public_path('assets/img/' . $category->image));
+        }
 
-
-        if($category) {
-            return Redirect::route("categories.all")->with(['update' => 'Category updated successfully']);
-        }    
+        // Store new image
+        $imageName = time() . '.' . $image->getClientOriginalExtension();
+        $image->move(public_path('assets/img'), $imageName);
+        $category->image = $imageName; // Just save filename if you're using assets/img/
     }
+
+    $category->save();
+
+    return Redirect::route("categories.all")->with(['update' => 'Category updated successfully']);
+}
 
     public function deleteCategories($id){
 
@@ -190,6 +205,42 @@ class AdminsController extends Controller
         }
 
     }
+
+    public function editProducts($id)
+    {
+        $product = Product::findOrFail($id);
+        return view('admins.editproducts', compact('product'));
+    }
+
+
+    public function updateProducts(Request $request, $id){
+        $product = Product::find($id);
+
+    // Update basic fields
+        $product->name = $request->name;
+        $product->price = $request->price;
+        $product->description = $request->description;
+
+    // Handle image upload
+        if ($request->hasFile('image')) {
+         $image = $request->file('image');
+
+        // Delete old image if exists
+        if (File::exists(public_path('assets/img/' . $product->image))) {
+            File::delete(public_path('assets/img/' . $product->image));
+        }
+
+        // Save new image
+        $imageName = time() . '.' . $image->getClientOriginalExtension();
+        $image->move(public_path('assets/img'), $imageName);
+        $product->image = $imageName;
+    }
+
+        $product->save();
+
+        return Redirect::route("products.all")->with(['update' => 'Product updated successfully']);
+    }
+
 
     public function deleteProducts($id){
 
